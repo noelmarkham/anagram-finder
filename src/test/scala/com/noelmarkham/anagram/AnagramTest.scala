@@ -19,4 +19,17 @@ class AnagramTest extends FunSuite {
     val mapping = new Anagram(givenList).mapping
     assert(mapping == testMap)
   }
+
+  test("Finding words") {
+    val givenList = List("abc", "cba", "bob", "bca")
+
+    val anagramFinder = new Anagram(givenList)
+
+    val foundAnagrams = anagramFinder.find("abc")
+
+    val expected = List("abc", "bca", "cba")
+
+    assert(foundAnagrams.forall(s => expected contains s))
+    assert(expected.forall(s => foundAnagrams contains s))
+  }
 }
