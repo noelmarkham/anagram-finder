@@ -4,7 +4,7 @@ import scalaz._
 import Scalaz._
 
 case class Stem(word: String) {
-  val stem: List[Char] = word.toList.sortWith((e1, e2) => (e1 < e2))
+  val stem: List[Char] = word.toLowerCase.trim.toList.sortWith((e1, e2) => (e1 < e2))
 
   override def equals(p1: Any) = p1 match {
     case s: Stem => s.stem == stem
@@ -25,14 +25,12 @@ class AnagramFinder(words: List[String]) {
   def createMapping(words: List[String]) = {
     var anagrams: Map[Stem, Set[String]] = Map()
 
-    words.foreach(s => anagrams = anagrams |+| Map(Stem(s.toLowerCase.trim()) -> Set(s.toLowerCase.trim())))
+    words.foreach(s => anagrams = anagrams |+| Map(Stem(s) -> Set(s)))
 
     anagrams
   }
   
-  def find(word: String): Option[Set[String]] = {
-    mapping.get(word)
-  }
+  def find(word: String): Option[Set[String]] = mapping.get(word)
 }
 
 object Anagrams {

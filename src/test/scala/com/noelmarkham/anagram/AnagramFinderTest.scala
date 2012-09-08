@@ -32,4 +32,12 @@ class AnagramFinderTest extends FunSuite {
     assert(foundAnagrams.forall(s => expected contains s))
     assert(expected.forall(s => foundAnagrams contains s))
   }
+
+  test("Full test") {
+
+    val expected = Some(Set("act", "cat", "Cat"))
+    val actual = Anagrams("/usr/share/dict/words", "cat")
+
+    assert(expected == actual)
+  }
 }
