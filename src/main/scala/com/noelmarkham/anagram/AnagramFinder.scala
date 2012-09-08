@@ -10,23 +10,35 @@ case class Stem(word: String) {
     case s: Stem => s.stem == stem
     case _ => false
   }
+
+  override def hashCode = stem.hashCode
+
+  override def toString = stem.mkString("Stem(", "", ")")
 }
 
-class AnagramFinder(words:List[String]) {
+class AnagramFinder(words: List[String]) {
+
+  implicit def string2Stem(s: String): Stem = Stem(s)
 
   val mapping = createMapping(words)
 
-
   def createMapping(words: List[String]) = {
-    var anagrams: Map[Stem, List[String]] = Map()
+    var anagrams: Map[Stem, Set[String]] = Map()
 
-    // todo make this work with mutable map? (add a semigroup for mutable maps?)
-    words.foreach(s => anagrams = anagrams |+| Map(Stem(s) -> List(s)))
+    words.foreach(s => anagrams = anagrams |+| Map(Stem(s.toLowerCase.trim()) -> Set(s.toLowerCase.trim())))
 
     anagrams
   }
   
-  def find(word: String): List[String] = {
-    mapping(Stem(word))
+  def find(word: String): Option[Set[String]] = {
+    mapping.get(word)
+  }
+}
+
+object Anagrams {
+
+  def apply(wordListFile: String, word: String) = {
+    val finder = new AnagramFinder(scala.io.Source.fromFile(wordListFile).mkString.split('\n').toList)
+    finder.find(word)
   }
 }
