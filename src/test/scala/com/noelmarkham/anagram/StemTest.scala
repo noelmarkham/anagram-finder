@@ -7,7 +7,7 @@ class StemTest extends org.scalatest.FunSuite {
   }
 
   test("Stem of Hello is H,e,l,l,o") {
-    assert(Stem("Hello").stem == List('H', 'e', 'l', 'l', 'o'))
+    assert(Stem("Hello").stem == List('e', 'h', 'l', 'l', 'o'))
   }
 
   test("Stems of abc and cba are equal") {
